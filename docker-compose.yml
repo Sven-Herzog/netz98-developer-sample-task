@@ -1,0 +1,105 @@
+version: "3.1"
+
+services:
+
+    # -----------------
+    # --- Workspace ---
+    # -----------------
+
+    workspace:
+        image: nginx:stable
+        container_name: netz98_workspace
+        volumes:
+            # Service Netz98
+            - ./service-netz98:/var/www/service-netz98
+            # Nginx - Default
+            - .docker/nginx/default:/var/www/default
+            # Nginx - Config
+            - .docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+            # Nginx Logs
+            - .docker/.logs/nginx:/var/log/nginx
+        links:
+            - php
+            - mysql
+            - redis
+        ports:
+            - "8080:80"
+
+    # -------------
+    # --- Redis ---
+    # -------------
+
+    redis:
+        image: redis:5
+        container_name: netz98_redis
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: netz98
+            MYSQL_USER: netz98
+            MYSQL_PASSWORD: netz98
+        volumes:
+            # Redis Data Storage
+            - .docker/.data/redis:/data
+            # Redis Logs
+            - .docker/.logs/redis:/var/log/redis
+        ports:
+            - "6379:6379"
+
+    # -------------
+    # --- MySQL ---
+    # -------------
+
+    mysql:
+        image: mysql:8.0
+        command: --default-authentication-plugin=mysql_native_password
+        container_name: netz98_mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: netz98
+            MYSQL_USER: netz98
+            MYSQL_PASSWORD: netz98
+        volumes:
+            # MySQL Data Storage
+            - .docker/.data/mysql:/var/lib/mysql
+            # MySQL Logs
+            - .docker/.logs/mysql:/var/log/mysql
+            # Init DB
+            - .docker/mysql/sql:/docker-entrypoint-initdb.d
+            # MySQL Configuration
+            - .docker/mysql/config:/etc/mysql/conf.d
+        ports:
+            - "3306:3306"
+
+    # -----------
+    # --- PHP ---
+    # -----------
+
+    php:
+        build: .docker/php
+        container_name: netz98_php
+        volumes:
+            # Service Netz98
+            - ./service-netz98:/var/www
+            # PHP Logs
+            - .docker/.logs/php:/var/log/php-fpm
+        working_dir: /var/www/app/public
+        command: php-fpm
+        links:
+            - workspace
+            - mysql
+            - redis
+        ports:
+            - "9000:9000"
+        environment:
+            APP_ENV: local
+            APP_DEBUG: 'true'
+            APP_KEY: 'rdzt45ghdfze5treddfger6e'
+            APP_LOCALE: en
+            APP_FALLBACK_LOCALE: en
+            DB_CONNECTION: mysql
+            DB_HOST: mysql
+            DB_DATABASE: netz98
+            DB_USERNAME: netz98
+            DB_PASSWORD: netz98
