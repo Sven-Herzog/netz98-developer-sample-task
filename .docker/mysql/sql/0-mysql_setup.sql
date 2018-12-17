@@ -16,16 +16,8 @@
 #     mysql -u root -p < /docker-entrypoint-initdb.d/createdb.sql
 #
 
-CREATE DATABASE IF NOT EXISTS `loadbee_tracking` COLLATE 'utf8_general_ci' ;
-CREATE USER IF NOT EXISTS 'loadbee_tracking'@'%'; 
-GRANT ALL ON `loadbee_tracking`.* TO 'loadbee_tracking'@'%' IDENTIFIED BY 'loadbee_tracking';
+#CREATE DATABASE IF NOT EXISTS `backend` COLLATE 'utf8_general_ci' ;
+#CREATE USER IF NOT EXISTS 'backend'@'%';
+#GRANT ALL ON `backend`.* TO 'backend'@'%' IDENTIFIED BY 'backend';
 
-CREATE DATABASE IF NOT EXISTS `loadbee` COLLATE 'utf8_general_ci' ;
-CREATE USER IF NOT EXISTS 'loadbee'@'%'; 
-GRANT ALL ON `loadbee`.* TO 'loadbee'@'%' IDENTIFIED BY 'loadbee';
-
-CREATE DATABASE IF NOT EXISTS `backend` COLLATE 'utf8_general_ci' ;
-CREATE USER IF NOT EXISTS 'backend'@'%'; 
-GRANT ALL ON `backend`.* TO 'backend'@'%' IDENTIFIED BY 'backend';
-
-FLUSH PRIVILEGES ;
+#FLUSH PRIVILEGES ;
