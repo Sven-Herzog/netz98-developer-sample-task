@@ -49,7 +49,7 @@ class Posts extends Model
      */
     public function getPosts()
     {
-        $query = $this->with('comments');
+        $query = $this;
         return $query->paginate(5);
     }
 
@@ -58,7 +58,7 @@ class Posts extends Model
      */
     public function getPostsComplete()
     {
-        $query = $this->with('comments')->with('creators');
+        $query = $this;
         return $query->get();
     }
 

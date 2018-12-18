@@ -45,7 +45,7 @@ class CreatorsController extends Controller
             return Response::json($creators);
         }
 
-        return Response::internalError('Unable to get the users');
+        return Response::internalError('Unable to get the creators');
     }
 
     /**

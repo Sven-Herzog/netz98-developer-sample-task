@@ -12,9 +12,9 @@
 */
 
 /**
- * Routes for Creator
+ * Routes for Creators
  */
-$router->group(['prefix' => 'creator', 'namespace' => '\App\Http\Controllers'], function() use ($router) {
+$router->group(['prefix' => 'creators', 'namespace' => '\App\Http\Controllers'], function() use ($router) {
     $router->get('/', ['uses' => 'CreatorsController@getCreators']);
     $router->get('{id}/posts', ['uses' => 'CreatorsController@getCreatorPosts']);
     $router->get('{id}/posts/{postId}', ['uses' => 'CreatorsController@getCreatorPost']);
